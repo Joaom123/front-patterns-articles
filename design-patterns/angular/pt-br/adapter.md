@@ -10,3 +10,11 @@ O primeiro caso a ser analisado será a aplicação do padrão de projeto Adapte
 O projeto está hospedado no *StackBlitz* (link).
 
 Em cada exemplo, vamos analisar uma situação/problema, vamos comparar dois exemplos de resolução do problema, um que siga o padrão de projeto e outro que não. Então, vamos comparar as vantagens e desvantagens de cada um.
+
+## O que é o Adapter?
+
+## Referências
+
+[1] <https://florimond.dev/en/posts/2018/09/consuming-apis-in-angular-the-model-adapter-pattern/>
+
+[2] <https://www.geeksforgeeks.org/adapter-pattern/>
