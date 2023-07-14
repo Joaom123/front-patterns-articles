@@ -1,82 +1,42 @@
-# Integração com APIs
+# Integração com APIs - Model Adapter
 
-Grande parte das aplicações *frontend* fazem requisições HTTP, consumindo uma API, que retorna uma *estrutura* de dados conhecida (chamada de DTOs). Porém, eles podem mudar, necessitando de adaptações inesperadas no *frontend*. Estas mudanças ocorrem por:
 
-* Mudanças nos requisitos do sistema
-* Necessidade de integração com um serviço de terceiro
-* Proteção de dados sensíveis
 
 ## Problema
 
-Deve ser exibido a seguinte tela com as informações de um item:
 
-| Nome   | Preço Unitário | Quantidade  | Desconto | Preço Total | Preço Final |
-|--------|----------------|-------------|----------|-------------|-------------|
-| Item A | R$ 20,00       | 2           | 10%      | R$40,00     | R$36,00     |
-| Item B | R$ 10,00       | 10          | 5%       | R$100,00    | R$95,00     |
-
-Porém, nem todos esses dados estão presentes no endpoint exposto pelo backend, que é o seguinte:
-
-```json
-[
-  {
-    id: 1,
-    name: "Item A"
-    price: 20,
-    quantity: 2,
-    discount: 0.1,
-  },
-  {
-    id: 1,
-    name: "Item B"
-    price: 10,
-    quantity: 10,
-    discount: 0.05,
-  }
-]
-
-```
-
-O JSON enviado pelo backend não possui todas as informações da tabela, ele precisa ser tratado/manipulado para que todos os dados da tabela possam ser exibidos.
 
 ## Solução sem Adapter
 
-Uma solução sem a utilização do adapter seria a criação de um service que fará a chamada pra API. No contexto do Angular, criamos o seguinte service:
+Sem o adapter, o componente consumirá os dados da API sem nenhum tipo de tratamento. Para "emular" uma chamada de uma api, criamos um serviço que 
+Uma solução sem a utilização do adapter seria a criação de um *service* que fará a chamada pra API. No contexto do Angular, criamos o seguinte *service* com uma função chamada *getItems*:
 
 ```ts
-@Injectable({
-  providedIn: 'root'
-})
-export class DataService {
+getItems(): Observable<ItemDTO[]> {
+  const mockItems: ItemDTO[] = [
+    {
+      id: 1,
+      name: 'Item A',
+      price: 20,
+      quantity: 2,
+      discount: 0.1
+    },
+    {
+      id: 2,
+      name: 'Item B',
+      price: 10,
+      quantity: 10,
+      discount: 0.05
+    }
+  ]
 
-  constructor() { }
-
-  getItems(): Observable<ItemDTO[]> {
-    const mockItems: ItemDTO[] = [
-      {
-        id: 1,
-        name: 'Item A',
-        price: 20,
-        quantity: 2,
-        discount: 0.1
-      },
-      {
-        id: 2,
-        name: 'Item B',
-        price: 10,
-        quantity: 10,
-        discount: 0.05
-      }
-    ]
-
-    return of(mockItems).pipe(
-      delay(1000)
-    );
-  }
+  return of(mockItems).pipe(
+    delay(1000)
+  );
 }
 ```
 
-Essa função `getItems` apenas emula uma requisição, então após 1000 milisegundos, será retornado um `Observable<ItemDTO[]>`.
+Essa função `getItems` apenas emula uma requisição, então após 1000 milissegundos, será retornado um `Observable<ItemDTO[]>`.
 
 ```ts
 export class AdapterComponent implements OnInit {
@@ -174,12 +134,4 @@ A função `mapToTableItem()` é responsável por transformar um `ItemDTO` em `T
 
 ### Desvantagens
 
-## Outra Solução com Adapter
 
-### Vantagens
-
-### Desvantagens
-
-* Alta complexidade
-
-## Outra Solução co
